@@ -14,7 +14,9 @@ class Link
 end
 
 class LinkedList
+  attr_accessor  :head, :tail
   include Enumerable
+
 
   def initialize
     set_sentinels
@@ -25,18 +27,26 @@ class LinkedList
     nil
   end
 
-  def first
-    return @head.next unless @head.next.key == :tail
+  def first(include_head = false)
+    if include_head
+      return @head
+    else
+      return @head.next
+    end
     nil
   end
 
-  def last
-    return @tail.prev unless @tail.prev.key == :head
+  def last(include_tail = false)
+    if include_tail
+      return @tail
+    else
+      return @tail.prev
+    end
     nil
   end
 
   def empty?
-    first.nil? && last.nil?
+    first.val.nil? && last.val.nil?
   end
 
   def get(key)
@@ -56,6 +66,7 @@ class LinkedList
     link.prev = @tail.prev
     @tail.prev.next = link
     @tail.prev = link
+    link
   end
 
   def remove(key)
@@ -65,6 +76,7 @@ class LinkedList
       link.prev.next = link.next
       link.next.prev = link.prev
     end
+    link
   end
 
   def each(&prc)
@@ -83,6 +95,14 @@ class LinkedList
   #   inject([]) { |acc, link| acc << "[#{link.key}, #{link.val}]" }.join(", ")
   # end
 
+  def get_link(key)
+    each do |link|
+      return link if link.key == key
+    end
+
+    nil
+  end
+
   private
 
   def set_sentinels
@@ -90,14 +110,6 @@ class LinkedList
     @tail = Link.new(:tail,nil)
     @head.next = @tail
     @tail.prev = @head
-  end
-
-  def get_link(key)
-    each do |link|
-      return link if link.key == key
-    end
-
-    nil
   end
 
 end
