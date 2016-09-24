@@ -33,8 +33,7 @@ class Hash
     hash = 8543893498243705876
 
     each do |key, value|
-      hash = hash ^ key.hash
-      hash = hash ^ value.hash
+      hash = hash ^ ((key.hash + "key".hash).hash + (value.hash + "value".hash)).hash
     end
 
     hash
